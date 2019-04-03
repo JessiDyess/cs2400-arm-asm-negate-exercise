@@ -1,58 +1,66 @@
+array
+        .word   1
+        .word   -2
+        .word   5
+        .word   -6
+        .word   2
 main
-		sub		sp, sp, #28
-		adr		r3, words
-		mov		r4, sp
-		mov		r5, r3
-		ldmia	r5!, {r0, r1, r2, r3}
-		stmia	r4!, {r0, r1, r2, r3}
-		ldr		r3, [r5]
-		str		r3, [r4]
-		movs		r3, #0
-		str		r3, [sp, #20]
-		b		L4
-L6
-		ldr		r3, [sp, #20]
-		lsls		r3, r3, #2
-		add		r2, sp, #24
-		add		r3, r3, r2
-		ldr		r3, [r3, #-24]
-		cmp		r3, #0
-		bge		L5
-		ldr		r3, [sp, #20]
-		lsls		r3, r3, #2
-		add		r2, sp, #24
-		add		r3, r3, r2
-		ldr		r3, [r3, #-24]
-		mov		r0, r3
-		bl		negate
-L9
-		mov		r2, r0
-		ldr		r3, [sp, #20]
-		lsls		r3, r3, #2
-		add		r1, sp, #24
-		add		r3, r3, r1
-		str		r2, [r3, #-24]
-L5
-		ldr		r3, [sp, #20]
-		adds		r3, r3, #1
-		str		r3, [sp, #20]
-L4
-		movs		r2, #5
-		ldr		r3, [sp, #20]
-		cmp		r3, r2
-		blt		L6
-		movs		r3, #0
-		mov		r0, r3
-		add		sp, sp, #28
-		end
-		
-negate
-		sub		sp, sp, #8
-		str		r0, [sp, #4]
-		ldr		r3, [sp, #4]
-		rsbs		r3, r3, #0
-		mov		r0, r3
-		add		sp, sp, #8
-		b		L9
-		
-words	DCD		1, -2, 5, -6, 2
+        str     fp, [sp, #-4]!
+        add     fp, sp, #0
+        ldr     r3, .L8
+        ldr     r3, [r3]
+        cmp     r3, #0
+        bge     .L2
+        ldr     r3, .L8
+        ldr     r3, [r3]
+        rsb     r3, r3, #0
+        ldr     r2, .L8
+        str     r3, [r2]
+.L2
+        ldr     r3, .L8
+        ldr     r3, [r3, #4]
+        cmp     r3, #0
+        bge     .L3
+        ldr     r3, .L8
+        ldr     r3, [r3, #4]
+        rsb     r3, r3, #0
+        ldr     r2, .L8
+        str     r3, [r2, #4]
+.L3
+        ldr     r3, .L8
+        ldr     r3, [r3, #8]
+        cmp     r3, #0
+        bge     .L4
+        ldr     r3, .L8
+        ldr     r3, [r3, #8]
+        rsb     r3, r3, #0
+        ldr     r2, .L8
+        str     r3, [r2, #8]
+.L4
+        ldr     r3, .L8
+        ldr     r3, [r3, #12]
+        cmp     r3, #0
+        bge     .L5
+        ldr     r3, .L8
+        ldr     r3, [r3, #12]
+        rsb     r3, r3, #0
+        ldr     r2, .L8
+        str     r3, [r2, #12]
+.L5
+        ldr     r3, .L8
+        ldr     r3, [r3, #16]
+        cmp     r3, #0
+        bge     .L6
+        ldr     r3, .L8
+        ldr     r3, [r3, #16]
+        rsb     r3, r3, #0
+        ldr     r2, .L8
+        str     r3, [r2, #16]
+.L6
+        mov     r3, #0
+        mov     r0, r3
+        add     sp, fp, #0
+        ldr     fp, [sp], #4
+        bx      lr
+.L8
+        .word   array
