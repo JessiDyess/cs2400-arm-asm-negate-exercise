@@ -1,66 +1,45 @@
-array
-        .word   1
-        .word   -2
-        .word   5
-        .word   -6
-        .word   2
 main
-        str     fp, [sp, #-4]!
-        add     fp, sp, #0
-        ldr     r3, .L8
-        ldr     r3, [r3]
-        cmp     r3, #0
-        bge     .L2
-        ldr     r3, .L8
-        ldr     r3, [r3]
-        rsb     r3, r3, #0
-        ldr     r2, .L8
-        str     r3, [r2]
-.L2
-        ldr     r3, .L8
-        ldr     r3, [r3, #4]
-        cmp     r3, #0
-        bge     .L3
-        ldr     r3, .L8
-        ldr     r3, [r3, #4]
-        rsb     r3, r3, #0
-        ldr     r2, .L8
-        str     r3, [r2, #4]
-.L3
-        ldr     r3, .L8
-        ldr     r3, [r3, #8]
-        cmp     r3, #0
-        bge     .L4
-        ldr     r3, .L8
-        ldr     r3, [r3, #8]
-        rsb     r3, r3, #0
-        ldr     r2, .L8
-        str     r3, [r2, #8]
-.L4
-        ldr     r3, .L8
-        ldr     r3, [r3, #12]
-        cmp     r3, #0
-        bge     .L5
-        ldr     r3, .L8
-        ldr     r3, [r3, #12]
-        rsb     r3, r3, #0
-        ldr     r2, .L8
-        str     r3, [r2, #12]
-.L5
-        ldr     r3, .L8
-        ldr     r3, [r3, #16]
-        cmp     r3, #0
-        bge     .L6
-        ldr     r3, .L8
-        ldr     r3, [r3, #16]
-        rsb     r3, r3, #0
-        ldr     r2, .L8
-        str     r3, [r2, #16]
-.L6
-        mov     r3, #0
-        mov     r0, r3
-        add     sp, fp, #0
-        ldr     fp, [sp], #4
-        bx      lr
-.L8
-        .word   array
+		sub		sp, sp, #12
+		movs		r3, #0
+		str		r3, [sp, #4]
+		b		L4
+L6
+		adr		r2, array
+		ldr		r3, [sp, #4]
+		ldr		r3, [r2, r3, lsl #2]
+		cmp		r3, #0
+		bge		L5
+		adr		r2, array
+		ldr		r3, [sp, #4]
+		ldr		r3, [r2, r3, lsl #2]
+		mov		r0, r3
+		bl		negate
+L9
+		mov		r1, r0
+		adr		r2, array
+		ldr		r3, [sp, #4]
+		str		r1, [r2, r3, lsl #2]
+L5
+		ldr		r3, [sp, #4]
+		adds		r3, r3, #1
+		str		r3, [sp, #4]
+L4
+		movs		r2, #5
+		ldr		r3, [sp, #4]
+		cmp		r3, r2
+		blt		L6
+		movs		r3, #0
+		mov		r0, r3
+		add		sp, sp, #12
+		end
+		
+negate
+		sub		sp, sp, #8
+		str		r0, [sp, #4]
+		ldr		r3, [sp, #4]
+		rsbs		r3, r3, #0
+		mov		r0, r3
+		add		sp, sp, #8
+		b		L9
+		
+array	DCD		1, -2, 5, -6, 2
